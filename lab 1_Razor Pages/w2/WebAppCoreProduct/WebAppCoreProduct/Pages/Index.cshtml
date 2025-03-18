@@ -1,0 +1,15 @@
+﻿@page
+@model IndexModel
+
+	@{
+		@if (Model.IsCorrect)
+		{
+			<p>Name: <b>@Model.Product.Name</b> </p> 
+			<p>Price: <b>@Model.Product.Price</b></p>
+		}
+		else
+		{
+			<p>Переданы некорректные данные</p>
+		}
+	}
+
