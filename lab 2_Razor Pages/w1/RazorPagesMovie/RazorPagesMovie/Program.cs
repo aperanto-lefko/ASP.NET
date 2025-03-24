@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using RazorPagesMovie.Data;
 using RazorPagesMovie.Models;
 namespace RazorPagesMovie
@@ -8,16 +7,7 @@ namespace RazorPagesMovie
 	{
 		public static void Main(string[] args)
 		{
-            /*var builder = WebApplication.CreateBuilder(args);
-			builder.Services.AddDbContext<RazorPagesMovieContext>(options =>
-			    options.UseSqlite(builder.Configuration.GetConnectionString("RazorPagesMovieContext") ?? throw new InvalidOperationException("Connection string 'RazorPagesMovieContext' not found.")));
-
-			// Add services to the container.
-			builder.Services.AddRazorPages();
-
-			var app = builder.Build();
-			*/
-
+            // Создаём "строитель" веб-приложения и загружаем конфигурацию из appsettings.json
             var builder = WebApplication.CreateBuilder(args);
 
             // Добавление контекста базы данных
@@ -37,6 +27,10 @@ namespace RazorPagesMovie
                 try
                 {
                     var context = services.GetRequiredService<RazorPagesMovieContext>();
+
+                    // EnsureCreated() создаёт базу данных, если она ещё не существует
+                    // В отличие от миграций, просто создаёт схему на основе текущей модели
+                    // Для продакшена лучше использовать миграции (Update-Database)
                     context.Database.EnsureCreated(); // Создаёт БД, если её нет (аналог Update-Database)
                     SeedData.Initialize(services);    // Заполняет данными
                 }
