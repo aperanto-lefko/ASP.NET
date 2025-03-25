@@ -71,4 +71,9 @@ logs/
 # Игнорировать папку с установщиком
 SleepAppInst/
 
-
+# SQLite databases and temporary files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm   # Shared memory file
+*.db-wal   # Write-ahead log

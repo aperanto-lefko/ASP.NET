@@ -1,0 +1,38 @@
+﻿@model IEnumerable<StudentPerformanceSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Топ 5 студентов";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Место</th>
+            <th>ФИО</th>
+            <th>Группа</th>
+            <th>Сумма баллов</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int position = 1;
+            foreach (var item in Model)
+            {
+                        <tr>
+                            <td>@position</td>
+                            <td>@item.LastName @item.FirstName</td>
+                            <td>@item.Group</td>
+                            <td><strong>@item.TotalPoints</strong></td>
+                        </tr>
+                position++;
+            }
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index" class="btn btn-primary">Назад к списку</a>
+</div>

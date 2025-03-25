@@ -1,0 +1,47 @@
+﻿@model IEnumerable<StudentPerformanceSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Список студентов";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Добавить нового студента</a>
+    <a asp-action="TopStudents" class="btn btn-primary">Топ 5 студентов</a>
+    <a asp-action="WorstStudents" class="btn btn-secondary">Худшие 5 студентов</a>
+</p>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.Group)</th>
+            <th>@Html.DisplayNameFor(model => model.TaskPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.TestPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.ExamPoints)</th>
+            <th>@Html.DisplayNameFor(model => model.TotalPoints)</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Group)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TaskPoints)</td>
+                    <td>@Html.DisplayFor(modelItem => item.TestPoints)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ExamPoints)</td>
+                    <td><strong>@Html.DisplayFor(modelItem => item.TotalPoints)</strong></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Редактировать</a>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Подробности</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Удалить</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
