@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentPerformanceSystem.Data;
+using StudentPerformanceSystem.Repository;
+using StudentPerformanceSystem.Service;
 
 namespace StudentPerformanceSystem
 {
@@ -12,6 +14,10 @@ namespace StudentPerformanceSystem
 
             // Добавление сервисов в контейнер
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IStudentService, StudentService>();
+            builder.Services.AddScoped<IReportGenerator, TextReportGenerator>();
+            builder.Services.AddDbContext<AppDbContext>();
 
             // Настройка SQLite
             builder.Services.AddDbContext<AppDbContext>(options =>

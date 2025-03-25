@@ -3,24 +3,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentPerformanceSystem.Data;
 using StudentPerformanceSystem.Models;
+using StudentPerformanceSystem.Service;
+using System.Text;
 
 namespace StudentPerformanceSystem.Controllers
 {
+   
     public class StudentsController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IStudentService _studentService;
 
-        public StudentsController(AppDbContext context)
+        public StudentsController(IStudentService studentService)
         {
-            _context = context;
+            _studentService = studentService;
         }
 
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var students = await _context.Students.ToListAsync(); 
-            var sortedStudents = students.OrderByDescending(s => s.TotalPoints).ToList(); 
-            return View(sortedStudents);
+            var students = await _studentService.GetAllStudentsAsync();
+            return View(students.OrderByDescending(s => s.TotalPoints));
         }
 
         // GET: Students/Details/5
@@ -31,14 +33,8 @@ namespace StudentPerformanceSystem.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return View(student);
+            var student = await _studentService.GetStudentByIdAsync(id.Value);
+            return student == null ? NotFound() : View(student);
         }
 
         // GET: Students/Create
@@ -54,8 +50,7 @@ namespace StudentPerformanceSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
+                await _studentService.CreateStudentAsync(student);
                 return RedirectToAction(nameof(Index));
             }
             return View(student);
@@ -69,12 +64,8 @@ namespace StudentPerformanceSystem.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            return View(student);
+            var student = await _studentService.GetStudentByIdAsync(id.Value);
+            return student == null ? NotFound() : View(student);
         }
 
         // POST: Students/Edit/5
@@ -89,22 +80,7 @@ namespace StudentPerformanceSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(student);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StudentExists(student.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _studentService.UpdateStudentAsync(student);
                 return RedirectToAction(nameof(Index));
             }
             return View(student);
@@ -118,14 +94,8 @@ namespace StudentPerformanceSystem.Controllers
                 return NotFound();
             }
 
-            var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return View(student);
+            var student = await _studentService.GetStudentByIdAsync(id.Value);
+            return student == null ? NotFound() : View(student);
         }
 
         // POST: Students/Delete/5
@@ -133,36 +103,28 @@ namespace StudentPerformanceSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var student = await _context.Students.FindAsync(id);
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
+            await _studentService.DeleteStudentAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
         // GET: Students/TopStudents
         public async Task<IActionResult> TopStudents()
         {
-            var topStudents = await _context.Students
-       .OrderByDescending(s => s.TaskPoints + s.TestPoints + s.ExamPoints) // Считаем сумму в SQL
-       .Take(5)
-       .ToListAsync();
-
-            return View(topStudents);
+            return View(await _studentService.GetTopStudentsAsync(5));
         }
 
         // GET: Students/WorstStudents
         public async Task<IActionResult> WorstStudents()
         {
-            var worstStudents = await _context.Students
-        .OrderBy(s => s.TaskPoints + s.TestPoints + s.ExamPoints)
-        .Take(5)
-        .ToListAsync();
-            return View(worstStudents);
+            return View(await _studentService.GetWorstStudentsAsync(5));
         }
 
-        private bool StudentExists(int id)
+        // GET: Students/ExportToText
+        [HttpGet("/Students/ExportToText")]
+        public async Task<IActionResult> ExportStudentsToText()
         {
-            return _context.Students.Any(e => e.Id == id);
+            var report = await _studentService.GenerateStudentReportAsync();
+            return File(Encoding.UTF8.GetBytes(report), "text/plain", "students_results.txt");
         }
     }
 }
