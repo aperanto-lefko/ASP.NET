@@ -7,15 +7,15 @@
 <h2>@ViewData["Title"]</h2>
 <hr />
 
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="row"> <!--  строка в сетке Bootstrap -->
+    <div class="col-md-6">  <!-- Колонка шириной 6 колонок (половина экрана) на средних устройствах и выше -->
+        <form asp-action="Create">  <!-- Форма, которая будет отправлена на действие Create контроллера -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Блок для отображения ОБЩИХ ошибок валидации модели (но не для отдельных полей) -->
 
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+            <div class="form-group"> <!-- Группа элементов формы (Bootstrap-стиль) -->
+                <label asp-for="LastName" class="control-label"></label>   <!-- Лейбл для поля LastName. Текст берется из атрибутов модели (Display.Name) -->
+                <input asp-for="LastName" class="form-control" />   <!-- Input для LastName. Автоматически устанавливает type="text", name и id -->
+                <span asp-validation-for="LastName" class="text-danger"></span> <!-- Блок для отображения ошибок валидации КОНКРЕТНО для LastName -->
             </div>
 
             <div class="form-group">

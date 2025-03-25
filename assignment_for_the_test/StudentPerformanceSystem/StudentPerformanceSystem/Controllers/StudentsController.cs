@@ -18,8 +18,8 @@ namespace StudentPerformanceSystem.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var students = await _context.Students.ToListAsync(); // Сначала загружаем данные
-            var sortedStudents = students.OrderByDescending(s => s.TotalPoints).ToList(); // Затем сортируем
+            var students = await _context.Students.ToListAsync(); 
+            var sortedStudents = students.OrderByDescending(s => s.TotalPoints).ToList(); 
             return View(sortedStudents);
         }
 
