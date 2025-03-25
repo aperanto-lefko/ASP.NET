@@ -18,7 +18,9 @@ namespace StudentPerformanceSystem.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Students.OrderByDescending(s => s.TotalPoints).ToListAsync());
+            var students = await _context.Students.ToListAsync(); // Сначала загружаем данные
+            var sortedStudents = students.OrderByDescending(s => s.TotalPoints).ToList(); // Затем сортируем
+            return View(sortedStudents);
         }
 
         // GET: Students/Details/5
@@ -141,9 +143,9 @@ namespace StudentPerformanceSystem.Controllers
         public async Task<IActionResult> TopStudents()
         {
             var topStudents = await _context.Students
-                .OrderByDescending(s => s.TotalPoints)
-                .Take(5)
-                .ToListAsync();
+       .OrderByDescending(s => s.TaskPoints + s.TestPoints + s.ExamPoints) // Считаем сумму в SQL
+       .Take(5)
+       .ToListAsync();
 
             return View(topStudents);
         }
@@ -152,10 +154,9 @@ namespace StudentPerformanceSystem.Controllers
         public async Task<IActionResult> WorstStudents()
         {
             var worstStudents = await _context.Students
-                .OrderBy(s => s.TotalPoints)
-                .Take(5)
-                .ToListAsync();
-
+        .OrderBy(s => s.TaskPoints + s.TestPoints + s.ExamPoints)
+        .Take(5)
+        .ToListAsync();
             return View(worstStudents);
         }
 
