@@ -1,6 +1,6 @@
-﻿using StudentPerformanceSystem.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentPerformanceSystem.Data;
 using StudentPerformanceSystem.Models;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace StudentPerformanceSystem.Repository

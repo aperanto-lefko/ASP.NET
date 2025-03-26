@@ -1,21 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StudentPerformanceSystem.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentPerformanceSystem.Models;
 using StudentPerformanceSystem.Service;
 using System.Text;
 
 namespace StudentPerformanceSystem.Controllers
 {
-   
+
     public class StudentsController : Controller
     {
         private readonly IStudentService _studentService;
+        private readonly IReportGenerator _reportGenerator;
 
-        public StudentsController(IStudentService studentService)
+        public StudentsController(IStudentService studentService, IReportGenerator reportGenerator)
         {
             _studentService = studentService;
+            _reportGenerator = reportGenerator;
         }
 
         // GET: Students
@@ -123,7 +122,8 @@ namespace StudentPerformanceSystem.Controllers
         [HttpGet("/Students/ExportToText")]
         public async Task<IActionResult> ExportStudentsToText()
         {
-            var report = await _studentService.GenerateStudentReportAsync();
+            var students = await _studentService.GetAllStudentsAsync();
+            var report = await _reportGenerator.GenerateStudentReportAsync(students);
             return File(Encoding.UTF8.GetBytes(report), "text/plain", "students_results.txt");
         }
     }

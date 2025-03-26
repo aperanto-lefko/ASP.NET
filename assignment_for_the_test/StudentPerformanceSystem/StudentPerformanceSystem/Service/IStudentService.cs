@@ -11,6 +11,6 @@ namespace StudentPerformanceSystem.Service
         Task DeleteStudentAsync(int id);
         Task<IEnumerable<Student>> GetTopStudentsAsync(int count);
         Task<IEnumerable<Student>> GetWorstStudentsAsync(int count);
-        Task<string> GenerateStudentReportAsync();
+
     }
 }

@@ -3,7 +3,7 @@
 namespace StudentPerformanceSystem.Repository
 {
     public interface IStudentRepository
-     {
+    {
         Task<IEnumerable<Student>> GetAllAsync();
         Task<Student> GetByIdAsync(int id);
         Task AddAsync(Student student);

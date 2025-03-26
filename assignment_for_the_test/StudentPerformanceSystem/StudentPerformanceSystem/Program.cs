@@ -9,7 +9,7 @@ namespace StudentPerformanceSystem
     {
         public static void Main(string[] args)
         {
-            
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Добавление сервисов в контейнер
