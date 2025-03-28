@@ -12,7 +12,7 @@ namespace StudentPerformanceSystem.Service
         public StudentService(IStudentRepository repository)
         {
             _repository = repository;
-                    }
+        }
 
         public async Task<IEnumerable<Student>> GetAllStudentsAsync()
             => await _repository.GetAllAsync();
@@ -35,11 +35,5 @@ namespace StudentPerformanceSystem.Service
         public async Task<IEnumerable<Student>> GetWorstStudentsAsync(int count)
             => await _repository.GetWorstStudentsAsync(count);
 
-       
-        /*public async Task<string> GenerateStudentReportAsync()
-        {
-            var students = await _repository.GetAllAsync();
-            return await _reportGenerator.GenerateStudentReportAsync(students);
-        }*/
     }
 }
