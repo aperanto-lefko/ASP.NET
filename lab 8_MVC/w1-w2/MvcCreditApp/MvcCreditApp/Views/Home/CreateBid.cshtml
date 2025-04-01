@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "CreateBid";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Подача заявки на кредит</h1>
+
+    <!-- Таблица существующих заявок -->
+    <h3 class="mt-5">Существующие заявки</h3>
+    <table class="table table-bordered table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Имя</th>
+                <th>Тип кредита</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in ViewBag.Bids)
+            {
+                    <tr>
+                        <td>@c.Name</td>
+                        <td>@c.CreditHead</td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Форма подачи заявки -->
+    <h3 class="mt-5">Форма подачи заявки</h3>
+    <form method="post" action="" class="mt-3">
+        <table class="table table-borderless">
+            <tr>
+                <td class="align-middle">Введите свое имя:</td>
+                <td><input type="text" name="Name" class="form-control" required /></td>
+            </tr>
+            <tr>
+                <td class="align-middle">Выберите тип кредита:</td>
+                <td>
+                    <select name="CreditHead" class="form-select" required>
+                        @foreach (var cr in ViewBag.Credits)
+                        {
+                                <option value="@cr.Head">@cr.Head</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center pt-4">
+                    <input type="submit" value="Отправить" class="btn btn-primary px-4" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
