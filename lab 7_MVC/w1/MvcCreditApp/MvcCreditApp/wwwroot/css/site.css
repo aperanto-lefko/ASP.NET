@@ -1,0 +1,37 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.table {
+    border: 2px solid #dee2e6; /* Светло-серая граница */
+    margin-bottom: 1rem;
+}
+
+    .table th {
+        background-color: #f8f9fa; /* Светлый фон для заголовков */
+        text-align: center;
+    }
+
+/* Стиль для формы */
+.form-control, .form-select {
+    max-width: 300px;
+}
